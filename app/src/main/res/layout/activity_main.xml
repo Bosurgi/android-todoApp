@@ -10,22 +10,27 @@
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="match_parent"
         android:text="@string/title_task"
         android:textColor="@android:color/black"
-        android:textStyle="bold"
         android:textSize="30sp"
-        />
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent" />
     <androidx.recyclerview.widget.RecyclerView
+        app:layout_constraintTop_toBottomOf="@id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/title"/>
+        />
 
-    <!-- TODO: Add button at the bottom
-    <Button
-        android:id="@+id/add"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-    -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/button_add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_gravity="end|bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="25dp"
+        android:src="@drawable/button_add_24"
+        android:contentDescription="@string/title_task" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

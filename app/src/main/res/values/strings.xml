@@ -4,4 +4,6 @@
     <string name="title_new_task">New Task</string>
     <string name="hint_add_task">Add a new task</string>
     <string name="add">add</string>
+    <string name="task_added">Task added</string>
+    <string name="task_empty">Task empty</string>
 </resources>

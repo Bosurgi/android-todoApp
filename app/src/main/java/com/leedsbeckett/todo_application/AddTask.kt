@@ -23,10 +23,16 @@ class AddTask : AppCompatActivity() {
         buttonClick.setOnClickListener {
             // TODO: Adding task to data class to display in Recycler view
 
-            // Clearing the text once button pressed
+            // Showing message if text is not empty
+            if (binding.todoTask.text.toString() != ""){
+                val snackbar = Snackbar.make(view, R.string.task_added, Snackbar.LENGTH_SHORT)
+                snackbar.show()
+            }
+            else {
+                val snackbar = Snackbar.make(view, R.string.task_empty, Snackbar.LENGTH_SHORT)
+                snackbar.show()
+            }
             binding.todoTask.text.clear()
-            val snackbar = Snackbar.make(view, "Task Added", Snackbar.LENGTH_SHORT)
-            snackbar.show()
         }
     }
 

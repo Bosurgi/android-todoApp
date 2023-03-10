@@ -10,11 +10,12 @@ class AddTask : AppCompatActivity() {
     private lateinit var binding: NewTaskBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Setting the binding
         binding = NewTaskBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         val view = binding.root
+        // Display the activity
         setContentView(view)
-
     }
 
 }

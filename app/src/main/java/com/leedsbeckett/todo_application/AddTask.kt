@@ -2,6 +2,7 @@ package com.leedsbeckett.todo_application
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import com.leedsbeckett.todo_application.databinding.ActivityMainBinding
 import com.leedsbeckett.todo_application.databinding.NewTaskBinding
 
@@ -24,6 +25,8 @@ class AddTask : AppCompatActivity() {
 
             // Clearing the text once button pressed
             binding.todoTask.text.clear()
+            val snackbar = Snackbar.make(view, "Task Added", Snackbar.LENGTH_SHORT)
+            snackbar.show()
         }
     }
 

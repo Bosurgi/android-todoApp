@@ -16,6 +16,15 @@ class AddTask : AppCompatActivity() {
         val view = binding.root
         // Display the activity
         setContentView(view)
+
+        // Setting on Button click listener
+        val buttonClick = binding.addButton
+        buttonClick.setOnClickListener {
+            // TODO: Adding task to data class to display in Recycler view
+
+            // Clearing the text once button pressed
+            binding.todoTask.text.clear()
+        }
     }
 
 }

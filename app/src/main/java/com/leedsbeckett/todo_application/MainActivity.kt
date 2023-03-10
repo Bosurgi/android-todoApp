@@ -10,6 +10,10 @@ class MainActivity : AppCompatActivity() {
 
     // Instantiating binding variable
     private lateinit var binding: ActivityMainBinding
+
+    // Instantiating the recycler view
+    private val tasksRecycler = binding.taskRecycler
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         // Initialising binding variable

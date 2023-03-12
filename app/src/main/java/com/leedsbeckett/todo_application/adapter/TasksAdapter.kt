@@ -27,15 +27,23 @@ class TasksAdapter(private val context: Context, private val data: List<Task>)
         return TaskViewHolder(adapterLayout)
     }
 
+    /***
+     * Gets the number of items in the tasks
+     */
     override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+        return data.size
     }
 
     /***
      * Method called by layout manager to replace content of an object in the list
      */
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        // Fetching the item from the dataset - List of Task at specified index
+        val item: Task = data[position]
+        // Setting the name
+        holder.taskView.text = item.name
+        // Setting the task if performed to tick the checkbox
+        holder.taskView.isChecked = item.isDone
     }
 
 }

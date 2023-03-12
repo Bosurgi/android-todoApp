@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.leedsbeckett.todo_application.R
@@ -15,7 +16,7 @@ class TasksAdapter(private val context: Context, private val data: List<Task>)
     // View holder nested class to hold items
     class TaskViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         // Fetching the view from the layout
-        val taskView: TextView = view.findViewById(R.id.taskCheckbox)
+        val taskView: CheckBox = view.findViewById(R.id.taskCheckbox)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {

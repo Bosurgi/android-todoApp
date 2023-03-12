@@ -15,7 +15,7 @@ class TasksAdapter(private val context: Context, private val data: List<Task>)
     // View holder nested class to hold items
     class TaskViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         // Fetching the view from the layout
-        val taskView: TextView = view.findViewById(R.id.task_item)
+        val taskView: TextView = view.findViewById(R.id.taskCheckbox)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {

@@ -5,10 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.leedsbeckett.todo_application.databinding.ActivityMainBinding
 import com.leedsbeckett.todo_application.databinding.NewTaskBinding
+import com.leedsbeckett.todo_application.utils.DatabaseHandler
 
 class AddTask : AppCompatActivity() {
 
     private lateinit var binding: NewTaskBinding
+
+    // Instantiating database
+    private var db: DatabaseHandler = DatabaseHandler(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Setting the binding

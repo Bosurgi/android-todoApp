@@ -7,29 +7,26 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.leedsbeckett.todo_application.model.Task
 
-private const val NAME =            "Tasks.db"
-private const val VERSION =         1
-private const val COLUMN_ID =       "_id"
-private const val COLUMN_TASK =     "task"
-private const val COLUMN_STATUS =   "task_status"
+private const val DATABASE_NAME = "Tasks.db"
+private const val TODO_TABLE = "todo_table"
+private const val VERSION = 1
+private const val COLUMN_ID = "_id"
+private const val COLUMN_TASK = "task"
+private const val COLUMN_STATUS = "task_status"
 
 private const val SQL_CREATE_ENTRIES =
-    "CREATE TABLE $NAME (" +
+    "CREATE TABLE $TODO_TABLE (" +
             "$COLUMN_ID INTEGER PRIMARY KEY," +
             "$COLUMN_TASK TEXT," +
             "$COLUMN_STATUS INTEGER)"
 
-private const val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS $NAME"
+private const val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS $TODO_TABLE"
 
 /**
  * Handler for managing the database to add and remove data
  * full documentation at [Documentation Link](https://developer.android.com/training/data-storage/sqlite)
  */
-class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, NAME, null, VERSION) {
-
-    // Instantiating database helper
-    private val dbHelper : DatabaseHandler = DatabaseHandler(context)
-
+class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, VERSION) {
 
     override fun onCreate(db: SQLiteDatabase?) {
 
@@ -44,12 +41,17 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, NAME, null, 
         db?.execSQL(SQL_CREATE_ENTRIES)
     }
 
+    fun openDatabase(){
+        this.readableDatabase
+    }
+
     /**
      * Adding task into the database using its values
      */
     fun addTask(task: Task) {
+
         // Set database into write mode
-        val db = dbHelper.writableDatabase
+        val db = this.readableDatabase
 
         // New map of values with name and status as keys
         val values = ContentValues().apply {
@@ -57,7 +59,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, NAME, null, 
             put(COLUMN_STATUS, task.isDone)
         }
         // Inserting the new values
-        val newRowId = db?.insert(NAME, null, values)
+        val newRowId = db?.insert(TODO_TABLE, null, values)
     }
 
     /**
@@ -66,10 +68,10 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, NAME, null, 
      */
     fun readAllData(): Cursor {
         // Setting database to readable
-        val db = dbHelper.readableDatabase
+        val db = this.readableDatabase
 
         // Setting the query to interrogate all entries of the database
-        val query: String = "SELECT * FROM $NAME"
+        val query: String = "SELECT * FROM $TODO_TABLE"
 
         // Fetching all data from database with query
         return db.rawQuery(query, null)
@@ -78,7 +80,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, NAME, null, 
      * It gets all the tasks present in the database from cursor
      * @return A list of tasks to display
      */
-    fun getTaskList(cursor: Cursor): List<Task> {
+    fun getTaskList(cursor: Cursor): MutableList<Task> {
 
         // Instantiating the list of task
         val taskList: MutableList<Task> = mutableListOf()

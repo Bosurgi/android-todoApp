@@ -8,6 +8,8 @@ import com.leedsbeckett.todo_application.adapter.TasksAdapter
 import com.leedsbeckett.todo_application.databinding.ActivityMainBinding
 import com.leedsbeckett.todo_application.model.Task
 
+const val TAG = "Main Activity"
+
 class MainActivity : AppCompatActivity() {
 
     // Instantiating binding variable
@@ -40,8 +42,9 @@ class MainActivity : AppCompatActivity() {
             if(intent.resolveActivity(packageManager) != null) {
                 startActivity(intent)
             }
+            // If there is no activity, log message will be displayed
             else {
-                Log.d("Main Activity", "Activity not present")}
+                Log.d(TAG, "Activity not present")}
 
         }
     }

@@ -11,9 +11,6 @@ class AddTask : AppCompatActivity() {
 
     private lateinit var binding: NewTaskBinding
 
-    // Instantiating database
-    private var db: DatabaseHandler = DatabaseHandler(this)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         // Setting the binding
         binding = NewTaskBinding.inflate(layoutInflater)
@@ -26,6 +23,10 @@ class AddTask : AppCompatActivity() {
         val buttonClick = binding.addButton
         buttonClick.setOnClickListener {
             // TODO: Adding task to data class to display in Recycler view
+
+            // Instantiating database
+            var db: DatabaseHandler = DatabaseHandler(this)
+
 
             // Showing message if text is not empty
             if (binding.todoTask.text.toString() != ""){

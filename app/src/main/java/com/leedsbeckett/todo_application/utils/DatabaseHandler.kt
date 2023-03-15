@@ -38,7 +38,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
         // Dropping the previous table
         db?.execSQL(SQL_DELETE_ENTRIES)
         // Creating new table
-        db?.execSQL(SQL_CREATE_ENTRIES)
+        onCreate(db)
     }
 
     fun openDatabase(){
@@ -76,38 +76,5 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
         // Fetching all data from database with query
         return db.rawQuery(query, null)
     }
-    /***
-     * It gets all the tasks present in the database from cursor
-     * @return A list of tasks to display
-     */
-    fun getTaskList(cursor: Cursor): MutableList<Task> {
-
-        // Instantiating the list of task
-        val taskList: MutableList<Task> = mutableListOf()
-
-        // Index starting from -1 - Looping through all the cursor's elements
-        while(cursor.moveToNext()) {
-
-            // Instantiating new Task
-            val task: Task = Task()
-
-            // Getting the data
-            if(cursor.moveToFirst()){
-                task.id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))
-                task.isDone = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_STATUS))
-                task.name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TASK))
-
-                // Adding the task to the list
-                taskList.add(task)
-            }
-        } // End of while
-
-        // Closing the cursor
-        cursor.close()
-
-        return taskList
-
-    } // End of method
-
 
 } // End of class

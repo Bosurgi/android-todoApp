@@ -20,7 +20,8 @@ class TasksAdapter(private val context: Context, private val data: List<Task>)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
-        // Inflating the list of tasks
+
+        // Inflating the list of tasks represented by Checkbox
         val adapterLayout = LayoutInflater.from(parent.context)
             .inflate(R.layout.tasks_item, parent, false)
         // Returning the view holder with the adapter layout

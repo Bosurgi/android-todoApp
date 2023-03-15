@@ -19,9 +19,6 @@ class MainActivity : AppCompatActivity() {
     // Instantiating binding variable
     private lateinit var binding: ActivityMainBinding
 
-    // Instantiating the recycler view
-    private val tasksRecycler = binding.taskRecycler
-
     // Instantiating database
     private val db = DatabaseHandler(this)
 
@@ -37,11 +34,12 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+        val cursor = db.readAllData()
         // Setting task list based on database data
-        taskList = getTaskList(db.readAllData())
+        taskList = db.getTaskList(cursor)
 
-        // Setting the adapter for the recycler view
-        tasksRecycler.adapter = TasksAdapter(this, taskList)
+        // Instantiating the recycler view
+        val tasksRecycler = binding.taskRecycler
 
         // Setting button click listener to open new activity
         val buttonClick = binding.buttonAdd
@@ -58,41 +56,17 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+        // Setting the adapter for the recycler view
+        tasksRecycler.adapter = TasksAdapter(this, taskList)
+
     } // End of onCreate
 
-    /***
-     * It gets all the tasks present in the database from cursor
-     * @return A list of tasks to display
-     */
-    private fun getTaskList(cursor: Cursor): MutableList<Task> {
-
-        // Instantiating the list of task
-        val taskList: MutableList<Task> = mutableListOf()
-
-            // Instantiating new Task
-            val task: Task = Task()
-            if(cursor.count == 0) {
-                Toast.makeText(this, "No Data", Toast.LENGTH_SHORT).show()
-            }
-            else {
-                // Index starting from -1 - Looping through all the cursor's elements
-                while(cursor.moveToNext()){
-                        task.name = cursor.getString(0)
-                        task.status = cursor.getInt(1)
-
-                        // Adding the task to the list
-                        taskList.add(task)
-                    }
-                }
-        cursor.close()
-        return taskList
-    } // End of method
 
     /**
      * On on Destroy closing the database handler
      */
     override fun onDestroy() {
-        db.close()
         super.onDestroy()
+        db.close()
     }
 }

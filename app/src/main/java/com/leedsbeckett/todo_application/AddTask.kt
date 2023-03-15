@@ -23,8 +23,6 @@ class AddTask : AppCompatActivity() {
         // Setting on Button click listener
         val buttonClick = binding.addButton
         buttonClick.setOnClickListener {
-            // TODO: Adding task to data class to display in Recycler view
-
             // Instantiating database
             val db: DatabaseHandler = DatabaseHandler(this)
             // Creating task and setting it to status 0 - Not complete

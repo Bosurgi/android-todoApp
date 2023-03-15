@@ -5,6 +5,8 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.widget.Toast
+import com.leedsbeckett.todo_application.MainActivity
 import com.leedsbeckett.todo_application.model.Task
 
 private const val DATABASE_NAME = "Tasks.db"
@@ -62,6 +64,30 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
         val newRowId = db?.insert(TODO_TABLE, null, values)
     }
 
+
+    /***
+     * It gets all the tasks present in the database from cursor
+     * @return A list of tasks to display
+     */
+    fun getTaskList(cursor: Cursor): MutableList<Task> {
+
+        // Instantiating the list of task
+        val taskList: MutableList<Task> = mutableListOf()
+
+            // Index starting from -1 - Looping through all the cursor's elements
+            while(cursor.moveToNext()) {
+
+                // Instantiating new Task
+                val task: Task = Task()
+                task.name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TASK))
+                task.status = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_STATUS))
+
+                // Adding the task to the list
+                taskList.add(task)
+            }
+        cursor.close()
+        return taskList
+    } // End of method
     /**
      * It reads all data from the database and store it into cursor
      * @return cursor with data

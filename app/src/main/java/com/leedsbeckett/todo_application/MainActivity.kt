@@ -62,6 +62,13 @@ class MainActivity : AppCompatActivity() {
     } // End of onCreate
 
 
+    override fun onResume() {
+        super.onResume()
+        // Update the task List after adding entry
+        taskList = db.getTaskList(db.readAllData())
+        binding.taskRecycler.adapter = TasksAdapter(this, taskList)
+    }
+
     /**
      * On on Destroy closing the database handler
      */

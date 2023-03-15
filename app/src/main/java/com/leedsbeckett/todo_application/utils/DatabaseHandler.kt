@@ -2,6 +2,7 @@ package com.leedsbeckett.todo_application.utils
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.leedsbeckett.todo_application.model.Task
@@ -58,6 +59,29 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, NAME, null, 
         }
         // Inserting the new values
         val newRowId = db?.insert(NAME, null, values)
+    }
+
+    /***
+     * It gets all the tasks present in the database
+     * @return A list of tasks to display
+     */
+    fun getTaskList(): List<Task> {
+        // Setting database to readable
+        val db = dbHelper.readableDatabase
+
+        // Sorting order ascendant
+        val sortingOrder = "$NAME ASC"
+
+        // Setting the query to interrogate all entries of the database
+        val query: String = "SELECT * FROM $NAME"
+
+        // Instantiating the list of task
+        val taskList: MutableList<Task> = mutableListOf()
+
+        // TODO: Adding the content to List of Tasks
+        val cursor = db.rawQuery(query, null)
+
+        return taskList
     }
 
 

@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     // Instantiating temporary the list of task
-    private val taskList: List<Task> = listOf()
+    private val taskList: MutableList<Task> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 

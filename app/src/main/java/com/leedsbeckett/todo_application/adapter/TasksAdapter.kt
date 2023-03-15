@@ -43,7 +43,7 @@ class TasksAdapter(private val context: Context, private val data: List<Task>)
         // Setting the name
         holder.taskView.text = item.name
         // Setting the task if performed to tick the checkbox
-        holder.taskView.isChecked = item.isDone
+        item.isDone = if (holder.taskView.isChecked) 1 else 0
     }
 
 }

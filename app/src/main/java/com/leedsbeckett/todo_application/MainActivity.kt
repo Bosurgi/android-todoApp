@@ -17,6 +17,9 @@ class MainActivity : AppCompatActivity() {
     // Instantiating binding variable
     private lateinit var binding: ActivityMainBinding
 
+    // Instantiating database
+    private val db = DatabaseHandler(this)
+
     // Instantiating temporary the list of task
     private var taskList: MutableList<Task> = mutableListOf()
 
@@ -32,8 +35,6 @@ class MainActivity : AppCompatActivity() {
         // Instantiating the recycler view
         val tasksRecycler = binding.taskRecycler
 
-        // Instantiating database
-        val db = DatabaseHandler(this)
         // Setting task list based on database data
         taskList = db.getTaskList(db.readAllData())
 
@@ -55,5 +56,13 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+    } // End of onCreate
+
+    /**
+     * On on Destroy closing the database handler
+     */
+    override fun onDestroy() {
+        db.close()
+        super.onDestroy()
     }
 }

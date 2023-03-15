@@ -51,7 +51,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
     fun addTask(task: Task) {
 
         // Set database into write mode
-        val db = this.readableDatabase
+        val db = this.writableDatabase
 
         // New map of values with name and status as keys
         val values = ContentValues().apply {

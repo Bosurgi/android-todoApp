@@ -6,7 +6,6 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.leedsbeckett.todo_application.model.Task
-import java.sql.RowId
 
 private const val NAME =            "Tasks.db"
 private const val VERSION =         1
@@ -18,7 +17,7 @@ private const val SQL_CREATE_ENTRIES =
     "CREATE TABLE $NAME (" +
             "$COLUMN_ID INTEGER PRIMARY KEY," +
             "$COLUMN_TASK TEXT," +
-            "$COLUMN_STATUS BOOLEAN)"
+            "$COLUMN_STATUS INTEGER)"
 
 private const val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS $NAME"
 
@@ -61,28 +60,52 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, NAME, null, 
         val newRowId = db?.insert(NAME, null, values)
     }
 
-    /***
-     * It gets all the tasks present in the database
-     * @return A list of tasks to display
+    /**
+     * It reads all data from the database and store it into cursor
+     * @return cursor with data
      */
-    fun getTaskList(): List<Task> {
+    fun readAllData(): Cursor {
         // Setting database to readable
         val db = dbHelper.readableDatabase
-
-        // Sorting order ascendant
-        val sortingOrder = "$NAME ASC"
 
         // Setting the query to interrogate all entries of the database
         val query: String = "SELECT * FROM $NAME"
 
+        // Fetching all data from database with query
+        return db.rawQuery(query, null)
+    }
+    /***
+     * It gets all the tasks present in the database from cursor
+     * @return A list of tasks to display
+     */
+    fun getTaskList(cursor: Cursor): List<Task> {
+
         // Instantiating the list of task
         val taskList: MutableList<Task> = mutableListOf()
 
-        // TODO: Adding the content to List of Tasks
-        val cursor = db.rawQuery(query, null)
+        // Index starting from -1 - Looping through all the cursor's elements
+        while(cursor.moveToNext()) {
+
+            // Instantiating new Task
+            val task: Task = Task()
+
+            // Getting the data
+            if(cursor.moveToFirst()){
+                task.id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))
+                task.isDone = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_STATUS))
+                task.name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TASK))
+
+                // Adding the task to the list
+                taskList.add(task)
+            }
+        } // End of while
+
+        // Closing the cursor
+        cursor.close()
 
         return taskList
-    }
+
+    } // End of method
 
 
 } // End of class

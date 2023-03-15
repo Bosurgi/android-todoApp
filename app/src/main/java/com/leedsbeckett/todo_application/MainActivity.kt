@@ -77,9 +77,8 @@ class MainActivity : AppCompatActivity() {
             else {
                 // Index starting from -1 - Looping through all the cursor's elements
                 while(cursor.moveToNext()){
-                        task.id = cursor.getInt(0)
-                        task.isDone = cursor.getInt(1)
-                        task.name = cursor.getString(2)
+                        task.name = cursor.getString(0)
+                        task.status = cursor.getInt(1)
 
                         // Adding the task to the list
                         taskList.add(task)

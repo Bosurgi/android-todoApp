@@ -56,7 +56,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
         // New map of values with name and status as keys
         val values = ContentValues().apply {
             put(COLUMN_TASK, task.name)
-            put(COLUMN_STATUS, task.isDone)
+            put(COLUMN_STATUS, task.status)
         }
         // Inserting the new values
         val newRowId = db?.insert(TODO_TABLE, null, values)

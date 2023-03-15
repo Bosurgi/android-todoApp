@@ -7,8 +7,15 @@ package com.leedsbeckett.todo_application.model
  *  False = 0
  *  True = 1
  */
+/*
 data class Task(var id: Int, var isDone: Int, var name: String) {
 
     // Empty constructor for Task with default values
     constructor() : this (-1, 0, "")
+}
+*/
+
+
+data class Task(var name: String, var status: Int) {
+    constructor() : this ("", 0)
 }

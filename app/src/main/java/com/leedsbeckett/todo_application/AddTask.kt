@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.leedsbeckett.todo_application.databinding.ActivityMainBinding
 import com.leedsbeckett.todo_application.databinding.NewTaskBinding
+import com.leedsbeckett.todo_application.model.Task
 import com.leedsbeckett.todo_application.utils.DatabaseHandler
 
 class AddTask : AppCompatActivity() {
@@ -25,8 +26,11 @@ class AddTask : AppCompatActivity() {
             // TODO: Adding task to data class to display in Recycler view
 
             // Instantiating database
-            var db: DatabaseHandler = DatabaseHandler(this)
-
+            val db: DatabaseHandler = DatabaseHandler(this)
+            // Creating task and setting it to status 0 - Not complete
+            val task = Task(binding.todoTask.text.toString().trim(), 0)
+            // Adding the task to database
+            db.addTask(task)
 
             // Showing message if text is not empty
             if (binding.todoTask.text.toString() != ""){

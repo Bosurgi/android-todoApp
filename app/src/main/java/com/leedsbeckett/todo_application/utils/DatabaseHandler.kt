@@ -62,8 +62,36 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
         }
         // Inserting the new values
         val newRowId = db?.insert(TODO_TABLE, null, values)
+        // Set the task id to the row id
+        task.id = newRowId.toString()
     }
 
+    /**
+     * It updates the task status with the new status
+     */
+    fun updateStatus(rowId: String, status: Int) {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_STATUS, status)
+        }
+        val selection = "$COLUMN_ID LIKE $rowId"
+        val updated = db.update(TODO_TABLE, values, selection, arrayOf(rowId))
+    }
+
+    /**
+     * Deleting data row based on the row id
+     */
+    fun deleteData(rowId: String) {
+        val db = this.writableDatabase
+        val selection = "$COLUMN_ID LIKE $rowId"
+        val deleted = db.delete(TODO_TABLE, selection, arrayOf(rowId))
+    }
+
+    fun deleteAllData() {
+        val db = this.writableDatabase
+
+        val deleted = db.delete(TODO_TABLE, "1", null)
+    }
 
     /***
      * It gets all the tasks present in the database from cursor

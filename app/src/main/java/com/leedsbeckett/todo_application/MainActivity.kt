@@ -1,12 +1,9 @@
 package com.leedsbeckett.todo_application
 
 import android.content.Intent
-import android.database.Cursor
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.ContactsContract.Data
 import android.util.Log
-import android.widget.Toast
 import com.leedsbeckett.todo_application.adapter.TasksAdapter
 import com.leedsbeckett.todo_application.databinding.ActivityMainBinding
 import com.leedsbeckett.todo_application.model.Task
@@ -41,9 +38,13 @@ class MainActivity : AppCompatActivity() {
         // Instantiating the recycler view
         val tasksRecycler = binding.taskRecycler
 
-        // Setting button click listener to open new activity
-        val buttonClick = binding.buttonAdd
-        buttonClick.setOnClickListener{
+        // Instantiating Add button
+        val buttonAdd = binding.buttonAdd
+        // Instantiating Clear button
+        val buttonClear = binding.clearButton
+
+        // Add button Listener
+        buttonAdd.setOnClickListener{
             val intent = Intent(this, AddTask::class.java)
 
             // Checking if Activity is null
@@ -54,6 +55,16 @@ class MainActivity : AppCompatActivity() {
             else {
                 Log.d(TAG, "Activity not present")}
 
+        }
+
+        // Clear All Listener
+        buttonClear.setOnClickListener {
+            // Clear all data
+            db.deleteAllData()
+
+            // Updating the recycler view
+            taskList = db.getTaskList(db.readAllData())
+            binding.taskRecycler.adapter = TasksAdapter(this, taskList)
         }
 
         // Setting the adapter for the recycler view

@@ -41,10 +41,19 @@ class TasksAdapter(private val context: Context, private val data: List<Task>)
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         // Fetching the item from the dataset - List of Task at specified index
         val item: Task = data[position]
+
+        if (holder.taskView.isChecked) {
+            item.status = 1
+        }
         // Setting the name
         holder.taskView.text = item.name
+
+        if (item.status == 1) {
+            holder.taskView.isChecked = true
+        }
+
         // Setting the task if performed to tick the checkbox
-        item.status = if (holder.taskView.isChecked) 1 else 0
+//        item.status = if (holder.taskView.isChecked) 1 else 0
     }
 
 }

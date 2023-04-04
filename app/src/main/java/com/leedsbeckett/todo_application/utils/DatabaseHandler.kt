@@ -75,7 +75,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
             put(COLUMN_STATUS, status)
         }
         val selection = "$COLUMN_ID LIKE $rowId"
-        val updated = db.update(TODO_TABLE, values, selection, arrayOf(rowId))
+        val updated = db.update(TODO_TABLE, values, selection, null)
     }
 
     /**
@@ -84,7 +84,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
     fun deleteData(rowId: String) {
         val db = this.writableDatabase
         val selection = "$COLUMN_ID LIKE $rowId"
-        val deleted = db.delete(TODO_TABLE, selection, arrayOf(rowId))
+        val deleted = db.delete(TODO_TABLE, selection, null)
     }
 
     fun deleteAllData() {
@@ -107,6 +107,8 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
 
                 // Instantiating new Task
                 val task: Task = Task()
+                // Setting task properties
+                task.id = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ID))
                 task.name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TASK))
                 task.status = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_STATUS))
 

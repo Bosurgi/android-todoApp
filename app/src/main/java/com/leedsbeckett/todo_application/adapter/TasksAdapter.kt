@@ -49,17 +49,23 @@ class TasksAdapter(private val context: Context, private val data: List<Task>)
         // Fetching the item from the dataset - List of Task at specified index
         val item: Task = data[position]
 
+        if (item.status == 1) {
+            holder.taskView.isChecked = true
+        }
+
+        // CheckBox listener
         holder.taskView.setOnCheckedChangeListener{ _: CompoundButton, isChecked: Boolean ->
+            // When checked the task status will be updated
             if(isChecked) {
                 db.updateStatus(item.id, 1)
-                Toast.makeText(this.context, "Task Done", Toast.LENGTH_LONG).show()
+                Toast.makeText(this.context, item.name + " done", Toast.LENGTH_LONG).show()
+            }
+            // When UnChecked the task status will be reset
+            else {
+                db.updateStatus(item.id, 0)
+                Toast.makeText(this.context, item.name + " unchecked", Toast.LENGTH_LONG).show()
             }
         }// Setting the name
         holder.taskView.text = item.name
-        Log.d("Adapter", "OnBind accessed")
-
-
-        // Setting the task if performed to tick the checkbox
-//        item.status = if (holder.taskView.isChecked) 1 else 0
     }
 }

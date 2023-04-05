@@ -4,11 +4,13 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.CompoundButton
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.leedsbeckett.todo_application.adapter.TasksAdapter
 import com.leedsbeckett.todo_application.databinding.ActivityMainBinding
 import com.leedsbeckett.todo_application.model.Task
+import com.leedsbeckett.todo_application.utils.CustomItemTouchHelper
 import com.leedsbeckett.todo_application.utils.DatabaseHandler
+import com.leedsbeckett.todo_application.utils.ItemTouchHelperAdapter
 
 const val TAG = "Main Activity"
 
@@ -70,6 +72,10 @@ class MainActivity : AppCompatActivity() {
 
         // Setting the adapter for the recycler view
         tasksRecycler.adapter = TasksAdapter(this, taskList)
+
+        // Assigning the adapter to variable
+        val adapter = tasksRecycler.adapter
+
 
     } // End of onCreate
 

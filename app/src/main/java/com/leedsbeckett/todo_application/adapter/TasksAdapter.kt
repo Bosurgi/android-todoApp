@@ -12,8 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.leedsbeckett.todo_application.R
 import com.leedsbeckett.todo_application.model.Task
 import com.leedsbeckett.todo_application.utils.DatabaseHandler
+import com.leedsbeckett.todo_application.utils.ItemTouchHelperAdapter
 
-class TasksAdapter(private val context: Context, private val data: List<Task>)
+class TasksAdapter(private val context: Context, private val data: MutableList<Task>)
     : RecyclerView.Adapter<TasksAdapter.TaskViewHolder>(){
 
 

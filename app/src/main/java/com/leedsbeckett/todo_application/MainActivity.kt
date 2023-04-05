@@ -69,13 +69,15 @@ class MainActivity : AppCompatActivity() {
             taskList = db.getTaskList(db.readAllData())
             binding.taskRecycler.adapter = TasksAdapter(this, taskList)
         }
+        val adapter = TasksAdapter(this, taskList)
 
         // Setting the adapter for the recycler view
-        tasksRecycler.adapter = TasksAdapter(this, taskList)
+        tasksRecycler.adapter = adapter
 
-        // Assigning the adapter to variable
-        val adapter = tasksRecycler.adapter
-
+        // Attaching the callback to the recyclerview
+        val callback: ItemTouchHelper.Callback = CustomItemTouchHelper(adapter)
+        val touchHelper = ItemTouchHelper(callback)
+        touchHelper.attachToRecyclerView(tasksRecycler)
 
     } // End of onCreate
 
@@ -92,6 +94,7 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onDestroy() {
         super.onDestroy()
+        // TODO: Implementing screen rotation
         db.close()
     }
 }

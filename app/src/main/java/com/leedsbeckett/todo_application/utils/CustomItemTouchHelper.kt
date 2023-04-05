@@ -3,16 +3,14 @@ package com.leedsbeckett.todo_application.utils
 import android.graphics.Color
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.leedsbeckett.todo_application.utils.ItemTouchHelperAdapter as UtilsItemTouchHelperAdapter
-
+import com.leedsbeckett.todo_application.adapter.TasksAdapter
 /**
  * It represents a Item touch helper which will manage the calls
  * to perform action such as swipe and drag and drop with custom options
  * @see ItemTouchHelper
  */
-class CustomItemTouchHelper(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>?) :
+class CustomItemTouchHelper(private val adapter: TasksAdapter) :
     ItemTouchHelper.Callback() {
-
 
     // Getter for the moving flags
     override fun getMovementFlags(
@@ -48,10 +46,9 @@ class CustomItemTouchHelper(adapter: RecyclerView.Adapter<RecyclerView.ViewHolde
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         // Initialising the position of the item from the adapter
         val position: Int = viewHolder.adapterPosition
+        // Calling the adapter Swipe function inherited from the Interface
+        adapter.onItemSwipe(position)
 
-        // Implementing the helper interface
-        val iTouchAdapter = UtilsItemTouchHelperAdapter {  }
-        iTouchAdapter.onItemSwipe(viewHolder.adapterPosition)
     }
 
     // Changing the colour to highlight the selected item

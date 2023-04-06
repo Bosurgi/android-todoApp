@@ -1,23 +1,19 @@
 package com.leedsbeckett.todo_application.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.Toast
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.leedsbeckett.todo_application.R
 import com.leedsbeckett.todo_application.model.Task
-import com.leedsbeckett.todo_application.utils.CustomItemTouchHelper
 import com.leedsbeckett.todo_application.utils.DatabaseHandler
-import com.leedsbeckett.todo_application.utils.ItemTouchHelperAdapter
 
 class TasksAdapter(private val context: Context, private val data: MutableList<Task>)
-    : RecyclerView.Adapter<TasksAdapter.TaskViewHolder>(), ItemTouchHelperAdapter {
+    : RecyclerView.Adapter<TasksAdapter.TaskViewHolder>() {
 
     private val db = DatabaseHandler(this.context)
 
@@ -74,13 +70,14 @@ class TasksAdapter(private val context: Context, private val data: MutableList<T
         holder.taskView.text = item.name
     }
 
-    // Function inherited from the Interface used to delete specific items
-    override fun onItemSwipe(position: Int) {
-        // Deleting the item from database
+    /**
+     * It removes an item from the position specified, updates the database
+     * and notifies the recycler view of item's delete so it can update its position
+     * @param position the index position of the item in the recycler view
+     */
+    fun removeItemAt(position: Int) {
         db.deleteData(data[position].id)
-        // Deleting data from the list to display on the RecyclerView
         data.removeAt(position)
-        // Notifying the recycler the item has been deleted
         notifyItemRemoved(position)
     }
 }

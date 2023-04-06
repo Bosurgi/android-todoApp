@@ -5,12 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.leedsbeckett.todo_application.adapter.TasksAdapter
 import com.leedsbeckett.todo_application.databinding.ActivityMainBinding
 import com.leedsbeckett.todo_application.model.Task
 import com.leedsbeckett.todo_application.utils.CustomItemTouchHelper
 import com.leedsbeckett.todo_application.utils.DatabaseHandler
-import com.leedsbeckett.todo_application.utils.ItemTouchHelperAdapter
 
 const val TAG = "Main Activity"
 
@@ -69,15 +69,21 @@ class MainActivity : AppCompatActivity() {
             taskList = db.getTaskList(db.readAllData())
             binding.taskRecycler.adapter = TasksAdapter(this, taskList)
         }
-        val adapter = TasksAdapter(this, taskList)
 
-        // Setting the adapter for the recycler view
-        tasksRecycler.adapter = adapter
+        // Instantiating an anonymous object which inherits from CustomTouchHandler
+        val swipeHandler = object : CustomItemTouchHelper(this){
 
-        // Attaching the callback to the recyclerview
-        val callback: ItemTouchHelper.Callback = CustomItemTouchHelper(adapter)
-        val touchHelper = ItemTouchHelper(callback)
-        touchHelper.attachToRecyclerView(tasksRecycler)
+            // Overriding the onSwipe listener
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                // Setting the adapter
+                val adapter = tasksRecycler.adapter as TasksAdapter
+                // Remove the item at the adapter's position
+                adapter.removeItemAt(viewHolder.adapterPosition)
+            }
+        }
+        // Attaching the ItemTouchHandler to the recycler view
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(tasksRecycler)
 
     } // End of onCreate
 

@@ -64,7 +64,6 @@ class MainActivity : AppCompatActivity() {
         buttonClear.setOnClickListener {
             // Clear all data
             db.deleteAllData()
-
             // Updating the recycler view
             taskList = db.getTaskList(db.readAllData())
             binding.taskRecycler.adapter = TasksAdapter(this, taskList)
@@ -88,6 +87,7 @@ class MainActivity : AppCompatActivity() {
     } // End of onCreate
 
 
+    // When rotating screen or on another Activity, on resume is called to restore the view
     override fun onResume() {
         super.onResume()
         // Update the task List after adding entry
@@ -100,7 +100,6 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onDestroy() {
         super.onDestroy()
-        // TODO: Implementing screen rotation
         db.close()
     }
 }

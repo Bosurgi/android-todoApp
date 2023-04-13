@@ -6,4 +6,5 @@
     <string name="add">add</string>
     <string name="task_added">Task added</string>
     <string name="task_empty">Task empty</string>
+    <string name="completed_task">Completed Tasks</string>
 </resources>

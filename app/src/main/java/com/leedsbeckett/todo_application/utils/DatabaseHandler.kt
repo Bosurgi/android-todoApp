@@ -89,7 +89,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
 
     fun deleteAllData() {
         val db = this.writableDatabase
-
+// TODO: review whereClause
         val deleted = db.delete(TODO_TABLE, "1", null)
     }
 

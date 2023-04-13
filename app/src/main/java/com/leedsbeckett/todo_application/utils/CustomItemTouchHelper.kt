@@ -2,8 +2,10 @@ package com.leedsbeckett.todo_application.utils
 
 import android.content.Context
 import android.graphics.Color
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.leedsbeckett.todo_application.R
 import com.leedsbeckett.todo_application.adapter.TasksAdapter
 import com.leedsbeckett.todo_application.model.Task
 
@@ -53,4 +55,9 @@ abstract class CustomItemTouchHelper(context: Context) :
         }
     }
 
+    // Resetting the colour to the original state after swipe
+    override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+        super.clearView(recyclerView, viewHolder)
+        viewHolder.itemView.setBackgroundColor(ContextCompat.getColor(viewHolder.itemView.context, R.color.white))
+    }
 }

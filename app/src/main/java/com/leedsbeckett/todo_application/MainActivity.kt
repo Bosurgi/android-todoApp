@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
         // Add button Listener
         buttonAdd.setOnClickListener{
-            val intent = Intent(this, AddTask::class.java)
+            val intent = Intent(this, AddTaskHost::class.java)
 
             // Checking if Activity is null
             if(intent.resolveActivity(packageManager) != null) {

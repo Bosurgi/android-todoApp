@@ -30,7 +30,7 @@ class NewTaskFragment : Fragment() {
         val buttonClick = binding.addButton
         buttonClick.setOnClickListener {
             // Instantiating database
-            val db: DatabaseHandler = DatabaseHandler(view.context)
+            val db = DatabaseHandler(view.context)
             // Creating task and setting it to status 0 - Not complete
             val task = Task(binding.todoTask.text.toString().trim(), 0)
             // Adding the task to database

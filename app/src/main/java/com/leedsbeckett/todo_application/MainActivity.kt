@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.leedsbeckett.todo_application.adapter.TasksAdapter
 import com.leedsbeckett.todo_application.databinding.ActivityMainBinding
+import com.leedsbeckett.todo_application.fragments.TaskRecyclerFragment
 import com.leedsbeckett.todo_application.model.Task
 import com.leedsbeckett.todo_application.utils.CustomItemTouchHelper
 import com.leedsbeckett.todo_application.utils.DatabaseHandler
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     private val db = DatabaseHandler(this)
 
     // Instantiating temporary the list of task
-    private var taskList: MutableList<Task> = mutableListOf()
+//    private var taskList: MutableList<Task> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -33,13 +34,16 @@ class MainActivity : AppCompatActivity() {
         // Setting up the layout view
         val view = binding.root
         setContentView(view)
+        // Instantiating the fragment
+        val fragment: TaskRecyclerFragment = TaskRecyclerFragment.newInstance()
 
-        val cursor = db.readAllData()
+        val fm = supportFragmentManager
+        fm.beginTransaction()
+            .add(binding.fragmentContainer.id, fragment)
+            .commitNow()
+//        val cursor = db.readAllData()
         // Setting task list based on database data
-        taskList = db.getTaskList(cursor)
-
-        // Instantiating the recycler view
-        val tasksRecycler = binding.taskRecycler
+//        taskList = db.getTaskList(cursor)
 
         // Instantiating Add button
         val buttonAdd = binding.buttonAdd
@@ -57,7 +61,6 @@ class MainActivity : AppCompatActivity() {
             // If there is no activity, log message will be displayed
             else {
                 Log.d(TAG, "Activity not present")}
-
         }
 
         // Clear All Listener
@@ -65,25 +68,9 @@ class MainActivity : AppCompatActivity() {
             // Clear all data
             db.deleteAllData()
             // Updating the recycler view
-            taskList = db.getTaskList(db.readAllData())
-            binding.taskRecycler.adapter = TasksAdapter(this, taskList)
+//            taskList = db.getTaskList(db.readAllData())
+//            binding.taskRecycler.adapter = TasksAdapter(this, taskList)
         }
-
-        // Instantiating an anonymous object which inherits from CustomTouchHandler
-        val swipeHandler = object : CustomItemTouchHelper(this){
-
-            // Overriding the onSwipe listener
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                // Setting the adapter
-                val adapter = tasksRecycler.adapter as TasksAdapter
-                // Remove the item at the adapter's position
-                adapter.removeItemAt(viewHolder.adapterPosition)
-            }
-        }
-        // Attaching the ItemTouchHandler to the recycler view
-        val itemTouchHelper = ItemTouchHelper(swipeHandler)
-        itemTouchHelper.attachToRecyclerView(tasksRecycler)
-
     } // End of onCreate
 
 
@@ -91,8 +78,8 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         // Update the task List after adding entry
-        taskList = db.getTaskList(db.readAllData())
-        binding.taskRecycler.adapter = TasksAdapter(this, taskList)
+//        taskList = db.getTaskList(db.readAllData())
+//        binding.taskRecycler.adapter = TasksAdapter(this, taskList)
     }
 
     /**

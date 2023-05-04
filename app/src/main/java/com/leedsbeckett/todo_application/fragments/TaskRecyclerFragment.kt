@@ -21,8 +21,9 @@ import com.leedsbeckett.todo_application.utils.DatabaseHandler
  * A simple [Fragment] subclass.
  * Use the [TaskRecyclerFragment.newInstance] factory method to
  * create an instance of this fragment.
+ * @param isAll flag to check if the data requested is all or only tasks done
  */
-class TaskRecyclerFragment : Fragment() {
+class TaskRecyclerFragment(private val isAll: Boolean) : Fragment() {
     // Setting up the binding to inflate the Recycler view
     private lateinit var binding: FragmentTaskRecyclerBinding
     private lateinit var taskList: MutableList<Task>
@@ -40,7 +41,12 @@ class TaskRecyclerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         db = DatabaseHandler(view.context)
-        taskList = db.getTaskList(db.readAllData())
+
+        taskList = if (this.isAll) {
+            db.getTaskList(db.readAllData())
+        } else {
+            db.getTaskList(db.readCompletedTask())
+        }
 
         // Instantiating the recycler view from the fragment
         val taskRecycler = binding.taskRecyclerFragment
@@ -70,11 +76,11 @@ class TaskRecyclerFragment : Fragment() {
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
-         *
+         * @param isAll flag to check if the data requested is all or only tasks done
          * @return A new instance of fragment TaskRecyclerFragment.
          */
-        fun newInstance(): TaskRecyclerFragment{
-            return TaskRecyclerFragment()
+        fun newInstance(isAll: Boolean): TaskRecyclerFragment{
+            return TaskRecyclerFragment(isAll)
         }
     }
 }

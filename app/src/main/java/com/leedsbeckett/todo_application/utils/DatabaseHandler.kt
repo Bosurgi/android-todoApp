@@ -43,10 +43,6 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
         onCreate(db)
     }
 
-    fun openDatabase(){
-        this.readableDatabase
-    }
-
     /**
      * Adding task into the database using its values
      */
@@ -130,6 +126,17 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
         val query: String = "SELECT * FROM $TODO_TABLE"
 
         // Fetching all data from database with query
+        return db.rawQuery(query, null)
+    }
+
+    fun readCompletedTask(): Cursor {
+        // Setting db to readable
+        val db = this.readableDatabase
+
+        // Setting the query
+        val query: String = "SELECT * FROM $TODO_TABLE WHERE $COLUMN_STATUS LIKE 1"
+
+        // Fetching the completed task from db with query
         return db.rawQuery(query, null)
     }
 

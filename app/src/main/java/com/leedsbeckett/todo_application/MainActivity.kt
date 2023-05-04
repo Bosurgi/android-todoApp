@@ -23,9 +23,6 @@ class MainActivity : AppCompatActivity() {
     // Instantiating database
     private val db = DatabaseHandler(this)
 
-    // Instantiating temporary the list of task
-//    private var taskList: MutableList<Task> = mutableListOf()
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
         // Initialising binding variable
@@ -35,15 +32,13 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         // Instantiating the fragment
-        val fragment: TaskRecyclerFragment = TaskRecyclerFragment.newInstance()
+        val fragment: TaskRecyclerFragment = TaskRecyclerFragment.newInstance(true)
 
+        // Adding the fragment to the view
         val fm = supportFragmentManager
         fm.beginTransaction()
             .add(binding.fragmentContainer.id, fragment)
             .commitNow()
-//        val cursor = db.readAllData()
-        // Setting task list based on database data
-//        taskList = db.getTaskList(cursor)
 
         // Instantiating Add button
         val buttonAdd = binding.buttonAdd
@@ -67,21 +62,24 @@ class MainActivity : AppCompatActivity() {
         buttonClear.setOnClickListener {
             // Clear all data
             db.deleteAllData()
-            // Updating the recycler view
-//            taskList = db.getTaskList(db.readAllData())
-//            binding.taskRecycler.adapter = TasksAdapter(this, taskList)
+            // Replacing the fragment with updated data
+            fm.beginTransaction()
+                .replace(binding.fragmentContainer.id, fragment)
+                .commitNow()
         }
     } // End of onCreate
-
 
     // When rotating screen or on another Activity, on resume is called to restore the view
     override fun onResume() {
         super.onResume()
-        // Update the task List after adding entry
-//        taskList = db.getTaskList(db.readAllData())
-//        binding.taskRecycler.adapter = TasksAdapter(this, taskList)
-    }
 
+        val fragment: TaskRecyclerFragment = TaskRecyclerFragment.newInstance(true)
+        // Updating the fragment with one having new data
+        val fm = supportFragmentManager
+        fm.beginTransaction()
+            .replace(binding.fragmentContainer.id, fragment)
+            .commitNow()
+    }
     /**
      * On on Destroy closing the database handler
      */

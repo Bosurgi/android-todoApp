@@ -4,6 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.leedsbeckett.todo_application.adapter.TasksAdapter
@@ -31,6 +33,9 @@ class MainActivity : AppCompatActivity() {
         // Setting up the layout view
         val view = binding.root
         setContentView(view)
+        // Initialising the Navigation Bar
+        val navBar = binding.navigationBar
+
         // Instantiating the fragment
         val fragment: TaskRecyclerFragment = TaskRecyclerFragment.newInstance(true)
 
@@ -45,6 +50,23 @@ class MainActivity : AppCompatActivity() {
         // Instantiating Clear button
         val buttonClear = binding.clearButton
 
+        // Nav Bar Listener
+        navBar.setOnItemSelectedListener {
+            item ->
+            when(item.itemId) {
+                // When home page it will show all the tasks
+                R.id.home -> {
+                    setFragment(TaskRecyclerFragment.newInstance(true))
+                    true
+                }
+                // When on completed task menu it shows only completed tasks
+                R.id.completed_task -> {
+                    setFragment(TaskRecyclerFragment.newInstance(false))
+                    true
+                }
+                else -> false
+            }
+        }
         // Add button Listener
         buttonAdd.setOnClickListener{
             val intent = Intent(this, AddTaskHost::class.java)
@@ -86,5 +108,16 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         db.close()
+    }
+
+    /**
+     * It Sets the current fragment with the one passed into the function
+     * @param fragment the fragment we want to replace with
+     */
+    private fun setFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction().apply {
+            replace(binding.fragmentContainer.id, fragment)
+            commitNow()
+        }
     }
 }

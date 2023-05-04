@@ -85,22 +85,14 @@ class MainActivity : AppCompatActivity() {
             // Clear all data
             db.deleteAllData()
             // Replacing the fragment with updated data
-            fm.beginTransaction()
-                .replace(binding.fragmentContainer.id, fragment)
-                .commitNow()
+            setFragment(fragment)
         }
     } // End of onCreate
 
     // When rotating screen or on another Activity, on resume is called to restore the view
     override fun onResume() {
         super.onResume()
-
-        val fragment: TaskRecyclerFragment = TaskRecyclerFragment.newInstance(true)
-        // Updating the fragment with one having new data
-        val fm = supportFragmentManager
-        fm.beginTransaction()
-            .replace(binding.fragmentContainer.id, fragment)
-            .commitNow()
+        setFragment(TaskRecyclerFragment.newInstance(true))
     }
     /**
      * On on Destroy closing the database handler

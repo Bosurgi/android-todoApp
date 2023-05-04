@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.leedsbeckett.todo_application.R
 import com.leedsbeckett.todo_application.adapter.TasksAdapter
 import com.leedsbeckett.todo_application.databinding.FragmentTaskRecyclerBinding
@@ -42,6 +44,10 @@ class TaskRecyclerFragment : Fragment() {
 
         // Instantiating the recycler view from the fragment
         val taskRecycler = binding.taskRecyclerFragment
+        // Setting the Layout Manager
+        val lm : LinearLayoutManager = LinearLayoutManager(context)
+        // Assigning the layout manager with the Recycler view
+        taskRecycler.layoutManager = lm
         taskRecycler.adapter = TasksAdapter(view.context, taskList)
 
         // Instantiating an anonymous object which inherits from CustomTouchHandler

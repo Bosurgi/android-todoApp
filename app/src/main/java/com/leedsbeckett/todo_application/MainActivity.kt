@@ -98,6 +98,9 @@ class MainActivity : AppCompatActivity() {
         }
     } // End of onCreate
 
+    /**
+     * When called it restores the fragment based on the page the user was on.
+     */
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         fragment = TaskRecyclerFragment.newInstance(savedInstanceState.getBoolean(BUNDLE_PAGE))

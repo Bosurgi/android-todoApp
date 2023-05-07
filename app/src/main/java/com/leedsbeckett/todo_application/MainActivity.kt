@@ -4,29 +4,29 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
-import com.leedsbeckett.todo_application.adapter.TasksAdapter
 import com.leedsbeckett.todo_application.databinding.ActivityMainBinding
 import com.leedsbeckett.todo_application.fragments.TaskRecyclerFragment
-import com.leedsbeckett.todo_application.model.Task
-import com.leedsbeckett.todo_application.utils.CustomItemTouchHelper
 import com.leedsbeckett.todo_application.utils.DatabaseHandler
 
 const val TAG = "Main Activity"
+const val BUNDLE_PAGE = "main"
 
 class MainActivity : AppCompatActivity() {
 
-    // Instantiating binding variable
+    // Initialising binding variable
     private lateinit var binding: ActivityMainBinding
+
+    // Initialising the fragment
+    private lateinit var fragment: TaskRecyclerFragment
 
     // Instantiating database
     private val db = DatabaseHandler(this)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    // Flag for main page selected
+    private var isMain: Boolean = true
 
+    override fun onCreate(savedInstanceState: Bundle?) {
         // Initialising binding variable
         binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
@@ -36,13 +36,18 @@ class MainActivity : AppCompatActivity() {
         // Initialising the Navigation Bar
         val navBar = binding.navigationBar
 
-        // Instantiating the fragment
-        val fragment: TaskRecyclerFragment = TaskRecyclerFragment.newInstance(true)
+        // The fragment is initialised based on the saved state, this indicates what page is open
+        fragment = if(savedInstanceState != null) {
+            TaskRecyclerFragment.newInstance(savedInstanceState.getBoolean(BUNDLE_PAGE))
+        } else {
+            TaskRecyclerFragment.newInstance(true)
+        }
 
         // Adding the fragment to the view
         val fm = supportFragmentManager
         fm.beginTransaction()
-            .add(binding.fragmentContainer.id, fragment)
+                // Replace is used to avoid adding multiple fragment on the view
+            .replace(binding.fragmentContainer.id, fragment)
             .commitNow()
 
         // Instantiating Add button
@@ -57,11 +62,13 @@ class MainActivity : AppCompatActivity() {
                 // When home page it will show all the tasks
                 R.id.home -> {
                     setFragment(TaskRecyclerFragment.newInstance(true))
+                    isMain = true
                     true
                 }
                 // When on completed task menu it shows only completed tasks
                 R.id.completed_task -> {
                     setFragment(TaskRecyclerFragment.newInstance(false))
+                    isMain = false
                     true
                 }
                 else -> false
@@ -89,10 +96,14 @@ class MainActivity : AppCompatActivity() {
         }
     } // End of onCreate
 
-    // When rotating screen or on another Activity, on resume is called to restore the view
-    override fun onResume() {
-        super.onResume()
-        setFragment(TaskRecyclerFragment.newInstance(true))
+    /**
+     * It saves the instance state storing the flag indicating if
+     * the main page is selected or not.
+     * This allows restoring the right view when screen rotated.
+     */
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(BUNDLE_PAGE, isMain)
     }
     /**
      * On on Destroy closing the database handler

@@ -23,11 +23,20 @@ import com.leedsbeckett.todo_application.utils.DatabaseHandler
  * create an instance of this fragment.
  * @param isAll flag to check if the data requested is all or only tasks done
  */
-class TaskRecyclerFragment(private val isAll: Boolean) : Fragment() {
+
+// Constant used as the key for the bundle containing the flag displaying for all data
+private const val BUNDLE_KEY = "all"
+class TaskRecyclerFragment() : Fragment() {
     // Setting up the binding to inflate the Recycler view
     private lateinit var binding: FragmentTaskRecyclerBinding
     private lateinit var taskList: MutableList<Task>
     private lateinit var db: DatabaseHandler
+    private var isAll: Boolean = false
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        isAll = requireArguments().getBoolean(BUNDLE_KEY)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -80,7 +89,11 @@ class TaskRecyclerFragment(private val isAll: Boolean) : Fragment() {
          * @return A new instance of fragment TaskRecyclerFragment.
          */
         fun newInstance(isAll: Boolean): TaskRecyclerFragment{
-            return TaskRecyclerFragment(isAll)
+            val bundle = Bundle(1)
+            val taskRecyclerFragment = TaskRecyclerFragment()
+            bundle.putBoolean(BUNDLE_KEY, isAll)
+            taskRecyclerFragment.arguments = bundle
+            return taskRecyclerFragment
         }
     }
 }

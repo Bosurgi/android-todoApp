@@ -54,6 +54,10 @@ class TasksAdapter(private val context: Context, private val data: MutableList<T
             holder.taskView.isChecked = true
         }
 
+        holder.taskView.setOnClickListener {
+            // TODO: Open the Bottom Sheet Fragment with task details
+        }
+
         // CheckBox listener
         holder.taskView.setOnCheckedChangeListener{ _: CompoundButton, isChecked: Boolean ->
             // When checked the task status will be updated

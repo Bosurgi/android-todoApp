@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.leedsbeckett.todo_application.databinding.ActivityMainBinding
 import com.leedsbeckett.todo_application.fragments.TaskRecyclerFragment
@@ -46,7 +47,6 @@ class MainActivity : AppCompatActivity() {
         // Adding the fragment to the view
         val fm = supportFragmentManager
         fm.beginTransaction()
-                // Replace is used to avoid adding multiple fragment on the view
             .add(binding.fragmentContainer.id, fragment)
             .commitNow()
 
@@ -93,6 +93,8 @@ class MainActivity : AppCompatActivity() {
         buttonClear.setOnClickListener {
             // Clear all data
             db.deleteAllData()
+            // It instantiate a new fragment to display
+            fragment = TaskRecyclerFragment.newInstance(true)
             // Replacing the fragment with updated data
             setFragment(fragment)
         }
@@ -100,10 +102,28 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * When called it restores the fragment based on the page the user was on.
+     * This is triggered after rotating the screen as the fragments are destroyed.
+     * After they need to be restored using the flag set.
      */
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         fragment = TaskRecyclerFragment.newInstance(savedInstanceState.getBoolean(BUNDLE_PAGE))
+        setFragment(fragment)
+    }
+
+    /**
+     * On Resume is needed when the activity is called back from the second host activity.
+     * When the activity resumes it will check what page of the navbar is selected
+     * and set the fragment accordingly.
+     */
+    override fun onResume() {
+        super.onResume()
+        val navBar = binding.navigationBar
+        fragment = if(navBar.menu.findItem(R.id.completed_task).isChecked) {
+            TaskRecyclerFragment.newInstance(false)
+        } else {
+            TaskRecyclerFragment.newInstance(true)
+        }
         setFragment(fragment)
     }
 

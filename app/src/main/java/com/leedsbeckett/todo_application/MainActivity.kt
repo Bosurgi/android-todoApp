@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         val fm = supportFragmentManager
         fm.beginTransaction()
                 // Replace is used to avoid adding multiple fragment on the view
-            .replace(binding.fragmentContainer.id, fragment)
+            .add(binding.fragmentContainer.id, fragment)
             .commitNow()
 
         // Instantiating Add button
@@ -80,6 +80,8 @@ class MainActivity : AppCompatActivity() {
 
             // Checking if Activity is null
             if(intent.resolveActivity(packageManager) != null) {
+                // When changing the activity it saves the state on which page the app is on
+                savedInstanceState?.putBoolean(BUNDLE_PAGE, isMain)
                 startActivity(intent)
             }
             // If there is no activity, log message will be displayed
@@ -95,6 +97,12 @@ class MainActivity : AppCompatActivity() {
             setFragment(fragment)
         }
     } // End of onCreate
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        fragment = TaskRecyclerFragment.newInstance(savedInstanceState.getBoolean(BUNDLE_PAGE))
+        setFragment(fragment)
+    }
 
     /**
      * It saves the instance state storing the flag indicating if

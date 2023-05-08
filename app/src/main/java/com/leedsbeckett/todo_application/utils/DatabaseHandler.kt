@@ -15,13 +15,14 @@ private const val VERSION = 1
 private const val COLUMN_ID = "_id"
 private const val COLUMN_TASK = "task"
 private const val COLUMN_STATUS = "task_status"
+private const val COLUMN_DETAILS = "task_details"
 
 private const val SQL_CREATE_ENTRIES =
     "CREATE TABLE $TODO_TABLE (" +
             "$COLUMN_ID INTEGER PRIMARY KEY," +
             "$COLUMN_TASK TEXT," +
-            "$COLUMN_STATUS INTEGER)"
-
+            "$COLUMN_STATUS INTEGER," +
+            "$COLUMN_DETAILS TEXT)"
 private const val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS $TODO_TABLE"
 
 /**
@@ -85,7 +86,6 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
 
     fun deleteAllData() {
         val db = this.writableDatabase
-// TODO: review whereClause
         val deleted = db.delete(TODO_TABLE, "1", null)
     }
 
@@ -107,6 +107,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
                 task.id = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ID))
                 task.name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TASK))
                 task.status = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_STATUS))
+                task.details = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DETAILS))
 
                 // Adding the task to the list
                 taskList.add(task)

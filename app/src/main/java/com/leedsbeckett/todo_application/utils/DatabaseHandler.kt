@@ -77,6 +77,19 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
     }
 
     /**
+     * It updated the Task detail with new information provided
+     * @param rowId the id of the Task
+     * @param details the new detail to update
+     */
+    fun updateDetails(rowId: String, details: String) {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_DETAILS, details)
+        }
+        val updated = db.update(TODO_TABLE, values, "_id = $rowId", null)
+    }
+
+    /**
      * It reads a specific task based on the id specified
      */
     fun readSingleTask(rowId: String): Task {

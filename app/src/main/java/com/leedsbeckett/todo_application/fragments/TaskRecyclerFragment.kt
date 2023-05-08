@@ -1,21 +1,20 @@
 package com.leedsbeckett.todo_application.fragments
 
 import android.os.Bundle
-import android.provider.ContactsContract.Data
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
-import com.leedsbeckett.todo_application.R
 import com.leedsbeckett.todo_application.adapter.TasksAdapter
 import com.leedsbeckett.todo_application.databinding.FragmentTaskRecyclerBinding
 import com.leedsbeckett.todo_application.model.Task
 import com.leedsbeckett.todo_application.utils.CustomItemTouchHelper
 import com.leedsbeckett.todo_application.utils.DatabaseHandler
+import com.leedsbeckett.todo_application.utils.IonTaskClickListener
 
 /**
  * A simple [Fragment] subclass.
@@ -26,11 +25,12 @@ import com.leedsbeckett.todo_application.utils.DatabaseHandler
 
 // Constant used as the key for the bundle containing the flag displaying for all data
 private const val BUNDLE_KEY = "all"
-class TaskRecyclerFragment() : Fragment() {
+class TaskRecyclerFragment() : Fragment(), IonTaskClickListener {
     // Setting up the binding to inflate the Recycler view
     private lateinit var binding: FragmentTaskRecyclerBinding
     private lateinit var taskList: MutableList<Task>
     private lateinit var db: DatabaseHandler
+    private lateinit var fm: FragmentManager
     private var isAll: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,7 +63,7 @@ class TaskRecyclerFragment() : Fragment() {
         val lm : LinearLayoutManager = LinearLayoutManager(context)
         // Assigning the layout manager with the Recycler view
         taskRecycler.layoutManager = lm
-        taskRecycler.adapter = TasksAdapter(view.context, taskList)
+        taskRecycler.adapter = TasksAdapter(view.context, taskList, this)
 
         // Instantiating an anonymous object which inherits from CustomTouchHandler
         val swipeHandler = object : CustomItemTouchHelper(view.context){
@@ -95,5 +95,9 @@ class TaskRecyclerFragment() : Fragment() {
             taskRecyclerFragment.arguments = bundle
             return taskRecyclerFragment
         }
+    }
+    override fun onTaskClicked(task: Task) {
+        val detailFragment = TaskDetailDialogFragment.newInstance()
+        detailFragment.show(parentFragmentManager, "Detail Dialog")
     }
 }

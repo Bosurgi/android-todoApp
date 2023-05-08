@@ -1,6 +1,7 @@
 package com.leedsbeckett.todo_application.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,15 +12,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.leedsbeckett.todo_application.R
 import com.leedsbeckett.todo_application.model.Task
 import com.leedsbeckett.todo_application.utils.DatabaseHandler
+import com.leedsbeckett.todo_application.utils.IonTaskClickListener
 
-class TasksAdapter(private val context: Context, private val data: MutableList<Task>)
+class TasksAdapter(private val context: Context, private val data: MutableList<Task>,
+                   private var listener: IonTaskClickListener?)
     : RecyclerView.Adapter<TasksAdapter.TaskViewHolder>() {
 
     private val db = DatabaseHandler(this.context)
 
-
     // View holder nested class to hold items
-    class TaskViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    class TaskViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         // Fetching the view from the layout
         val taskView: CheckBox = view.findViewById(R.id.taskCheckbox)
     }
@@ -46,7 +48,6 @@ class TasksAdapter(private val context: Context, private val data: MutableList<T
      */
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
 
-        //val db = DatabaseHandler(this.context)
         // Fetching the item from the dataset - List of Task at specified index
         val item: Task = data[position]
 
@@ -54,8 +55,9 @@ class TasksAdapter(private val context: Context, private val data: MutableList<T
             holder.taskView.isChecked = true
         }
 
-        holder.taskView.setOnClickListener {
-            // TODO: Open the Bottom Sheet Fragment with task details
+        // Setting the listener when an item is clicked using the interface
+        holder.itemView.setOnClickListener {
+            listener?.onTaskClicked(item)
         }
 
         // CheckBox listener

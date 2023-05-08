@@ -81,6 +81,10 @@ class TaskRecyclerFragment() : Fragment(), IonTaskClickListener {
         itemTouchHelper.attachToRecyclerView(taskRecycler)
     }
 
+    override fun onTaskClicked(task: Task) {
+        val detailFragment = TaskDetailDialogFragment.newInstance(task)
+        detailFragment.show(parentFragmentManager, "Detail Dialog")
+    }
     companion object {
         /**
          * Use this factory method to create a new instance of
@@ -96,8 +100,5 @@ class TaskRecyclerFragment() : Fragment(), IonTaskClickListener {
             return taskRecyclerFragment
         }
     }
-    override fun onTaskClicked(task: Task) {
-        val detailFragment = TaskDetailDialogFragment.newInstance()
-        detailFragment.show(parentFragmentManager, "Detail Dialog")
-    }
+
 }

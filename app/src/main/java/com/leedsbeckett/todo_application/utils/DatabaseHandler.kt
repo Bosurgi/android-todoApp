@@ -56,6 +56,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
         val values = ContentValues().apply {
             put(COLUMN_TASK, task.name)
             put(COLUMN_STATUS, task.status)
+            put(COLUMN_DETAILS, task.details)
         }
         // Inserting the new values
         val newRowId = db?.insert(TODO_TABLE, null, values)
@@ -73,6 +74,25 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
         }
         val selection = "$COLUMN_ID LIKE $rowId"
         val updated = db.update(TODO_TABLE, values, selection, null)
+    }
+
+    /**
+     * It reads a specific task based on the id specified
+     */
+    fun readSingleTask(rowId: String): Task {
+        val task = Task()
+        val db = this.readableDatabase
+        val query = "SELECT * FROM $TODO_TABLE WHERE $COLUMN_ID LIKE $rowId"
+        val selection = db.rawQuery(query, null)
+
+        while(selection.moveToNext()) {
+            task.id = selection.getString(selection.getColumnIndexOrThrow(COLUMN_ID))
+            task.name = selection.getString(selection.getColumnIndexOrThrow(COLUMN_TASK))
+            task.status = selection.getInt(selection.getColumnIndexOrThrow(COLUMN_STATUS))
+            task.details = selection.getString(selection.getColumnIndexOrThrow(COLUMN_DETAILS))
+        }
+        selection.close()
+        return task
     }
 
     /**

@@ -1,7 +1,6 @@
 package com.leedsbeckett.todo_application.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

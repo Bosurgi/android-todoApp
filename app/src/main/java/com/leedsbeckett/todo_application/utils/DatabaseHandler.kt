@@ -91,6 +91,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
 
     /**
      * It reads a specific task based on the id specified
+     * @param rowId the id of the task to read
      */
     fun readSingleTask(rowId: String): Task {
         val task = Task()

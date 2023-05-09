@@ -6,6 +6,7 @@ import android.widget.Button
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.leedsbeckett.todo_application.R
 import com.leedsbeckett.todo_application.databinding.FragmentItemDetailsDialogBinding
 import com.leedsbeckett.todo_application.model.Task
 import com.leedsbeckett.todo_application.utils.DatabaseHandler
@@ -41,12 +42,15 @@ class TaskDetailDialogFragment() : BottomSheetDialogFragment() {
             db.updateDetails(id!!, newDetails)
             dialog.dismiss()
         }
+        val textView = binding.fullDetails
+        val task = db.readSingleTask(id!!)
 
-        if (binding.details.toString() != "") {
-            val text = binding.todoTask.editableText
-            val task = db.readSingleTask(id!!)
-            text.append(task.details)
-        }
+        // Displaying standard text if task details are empty
+        if (task.details == "") {
+            textView.text = getString(R.string.no_details)
+        } else { textView.text = task.details }
+
+
         return dialog
     }
 

@@ -5,8 +5,6 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.widget.Toast
-import com.leedsbeckett.todo_application.MainActivity
 import com.leedsbeckett.todo_application.model.Task
 
 private const val DATABASE_NAME = "Tasks.db"

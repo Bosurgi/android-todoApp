@@ -6,8 +6,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.leedsbeckett.todo_application.R
-import com.leedsbeckett.todo_application.adapter.TasksAdapter
-import com.leedsbeckett.todo_application.model.Task
 
 /**
  * It represents a Item touch helper which will manage the calls
